@@ -1,0 +1,54 @@
+import threading
+import random
+import time
+class DekkersAlgorithm():
+ # flags to indicate if each prcoess is in queue to enter its critical section
+ flag = [False, False]
+ # to denote which prcoess will enter next
+ turn = 0
+
+ def process0(self):
+ #process 0 wants to enter
+ self.flag[0] = True
+ while self.flag[1] == True:
+ #if process1 is already running..
+ if self.turn == 1:
+ # gives access to other prcoess wait for random amount of time
+ self.flag[0] = False
+ while self.turn == 1:
+ #process 0 is waiting for process 1 to complete
+ print("waiting")
+ self.flag[0] = True
+ #critical section
+ print("process 1 running in critical section")
+ # remainder section
+ self.turn = 1
+ self.flag[0] = False
+ def process1(self):
+ #process 1 wants to enter
+ self.flag[1] = True
+ while self.flag[0] == True:
+ #if process0 is already running..
+ if self.turn == 0:
+ # gives access to other prcoess wait for random amount of time
+ self.flag[1] = False
+ while self.turn == 0:
+ #process 1 is waiting for process 0 to complete
+ print("waiting")
+ self.flag[1] = True
+ #critical section
+ print("process 2 running in critical section")
+ # remainder section
+ self.turn = 0
+ self.flag[1] = False
+ def main(self):
+ while True:
+ t1 = threading.Thread(target = self.process0)
+ t1.start()
+ t2 = threading.Thread(target = self.process1)
+ t2.start()
+ exit(5);
+if __name__ == "__main__":
+ d = DekkersAlgorithm()
+ d.main()
+exit(5);
